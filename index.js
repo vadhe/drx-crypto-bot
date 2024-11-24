@@ -16,7 +16,7 @@ const login = async (init) => {
                 'Accept': 'application/json, text/plain, */*',
                 'Connection': 'keep-alive',
                 'Content-Type': 'application/json',
-                'telegram-init-data': `${init}`,
+                'telegram-init-data': `${await readFile('init.txt', 'utf8')}`,
                 'x-requested-with': 'org.telegram.messenger',
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 11; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.107 Mobile Safari/537.36 Telegram-Android/11.3.3 (Realme RMX3235; Android 11; SDK 30; AVERAGE)'
             }, body: JSON.stringify({
@@ -34,6 +34,7 @@ const login = async (init) => {
         return new Promise((resolve) => readLine.question(query, (answer) => resolve(answer)));
     }
     const telegramInitData = await inputPayload("telegram-init-data: :")
+    await writeFile('init.txt', telegramInitData);
     const main = async () => {
         while (true) {
             function getRandomTimeInSeconds(min = 1, max = 100) {
